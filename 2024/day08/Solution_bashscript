@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo "Welcome to Bash Scripting! 🚀"
+name="Nikhil"
+age=25
+echo "My name is $name and I am $age years old."
+
+num1=10
+num2=20
+sum=$((num1 + num2))
+echo "The sum of $num1 and $num2 is $sum."
+
+echo "Current user: $USER"
+echo "Home directory: $HOME"
+echo "Shell: $SHELL"
+
+echo "Listing all .txt files in the directory:"
+ls *.txt 2>/dev/null
