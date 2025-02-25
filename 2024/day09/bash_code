@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Check if the directory argument is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <directory_path>"
+    exit 1
+fi
+
+directory="$1"
+backup_dir="$directory/backup_$(date +"%Y-%m-%d_%H-%M-%S")"
+
+# Check if the given directory exists
+if [ ! -d "$directory" ]; then
+    echo "Error: Directory '$directory' does not exist."
+    exit 1
+fi
+
+# Create a new backup directory
+mkdir -p "$backup_dir"
+
+# Copy all files from the given directory to the backup directory
+cp -r "$directory"/* "$backup_dir" 2>/dev/null
+
+echo "Backup created: $backup_dir"
+
+# Implement rotation: Keep only the last 3 backups
+backup_list=("$(ls -dt $directory/backup_* 2>/dev/null)")
+backup_count=${#backup_list[@]}
+
+if [ "$backup_count" -gt 3 ]; then
+    backups_to_delete=(${backup_list[@]:3})
+    for backup in "${backups_to_delete[@]}"; do
+        rm -rf "$backup"
+        echo "Deleted old backup: $backup"
+    done
+fi
+
